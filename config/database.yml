@@ -27,5 +27,5 @@ production:
   database: db/production_postgres
   pool: 5
   timeout: 5000
-  username: postgres
-  password: pass123
+  username: dbdh9jcdfmmd3h
+  password: jlzwxftdtywdgz
