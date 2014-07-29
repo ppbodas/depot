@@ -56,8 +56,11 @@ class ProductsController < ApplicationController
   # DELETE /products/1.json
   def destroy
     @product.destroy
+    if (@product.errors.has_key?(:base))
+      notice1 = @product.errors.full_messages
+    end
     respond_to do |format|
-      format.html { redirect_to products_url }
+      format.html { redirect_to products_url,notice: notice1 }
       format.json { head :no_content }
     end
   end
