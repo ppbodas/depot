@@ -1,5 +1,6 @@
 class LineItemsController < ApplicationController
   before_action :set_line_item, only: [:show, :edit, :update, :destroy, :total_price]
+  before_action :set_cart
 
   # GET /line_items
   # GET /line_items.json
@@ -68,6 +69,9 @@ class LineItemsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_line_item
       @line_item = LineItem.find(params[:id])
+    end
+    def set_cart
+      @cart = current_cart
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
