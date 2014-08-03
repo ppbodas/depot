@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-   before_action :set_cart
+  before_action :set_cart
 
   # GET /orders
   # GET /orders.json
@@ -15,6 +15,10 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
+    if @cart.line_items.empty?
+      redirect_to store_path, :notice => "No Items in Cart"
+      return
+    end
     @order = Order.new
   end
 
@@ -26,10 +30,13 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new(order_params)
+    @order.add_line_items_from_cart(current_cart)
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        Cart.destroy(current_cart)
+        session[:cart_id] = nil
+        format.html { redirect_to store_path, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else
         format.html { render action: 'new' }
